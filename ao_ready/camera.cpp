@@ -85,11 +85,11 @@ void Camera::set_position(const SDL_FPoint& position)
 {
 	m_position = position;
 
-	if (!SDL_RectEmpty(&m_limits))
-	{
-		m_position.x = SDL_clamp(m_position.x, m_limits.x, m_limits.w - m_viewport_width);
-		m_position.y = SDL_clamp(m_position.y, m_limits.y, m_limits.h - m_viewport_height);
-	}
+	//if (!SDL_RectEmpty(&m_limits))
+	//{
+	//	m_position.x = SDL_clamp(m_position.x, m_limits.x, m_limits.w - m_viewport_width);
+	//	m_position.y = SDL_clamp(m_position.y, m_limits.y, m_limits.h - m_viewport_height);
+	//}
 }
 
 void Camera::move(const SDL_FPoint& offset)
@@ -99,8 +99,8 @@ void Camera::move(const SDL_FPoint& offset)
 
 void Camera::move(float x, float y)
 {
-	float new_x = x - m_position.x;
-	float new_y = y - m_position.y;
+	float new_x = x + m_position.x;
+	float new_y = y + m_position.y;
 
 	set_position({ new_x, new_y });
 }

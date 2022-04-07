@@ -10,18 +10,22 @@
     <Filter Include="ext">
       <UniqueIdentifier>{2ac37f4d-57e8-4aae-bc84-e595f61dd0ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="io">
+      <UniqueIdentifier>{18195f30-bbbe-434b-acf0-9301c570765c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="renderer.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
-    <ClCompile Include="defines.cpp" />
+    <ClCompile Include="definitions.cpp" />
     <ClCompile Include="texture.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
     <ClCompile Include="image.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="byte_buffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="renderer.h">
@@ -30,7 +34,7 @@
     <ClInclude Include="grh_data.h">
       <Filter>data</Filter>
     </ClInclude>
-    <ClInclude Include="defines.h" />
+    <ClInclude Include="definitions.h" />
     <ClInclude Include="texture.h">
       <Filter>graphics</Filter>
     </ClInclude>
@@ -42,5 +46,6 @@
       <Filter>ext</Filter>
     </ClInclude>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="byte_buffer.h" />
   </ItemGroup>
 </Project>

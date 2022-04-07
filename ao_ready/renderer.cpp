@@ -4,6 +4,7 @@
 #include "renderer.h"
 #include "texture.h"
 #include "image.h"
+#include <iostream>
 
 Renderer::Renderer()
 :m_renderer(nullptr)
@@ -104,6 +105,11 @@ void Renderer::draw_texture(Texture* texture, const SDL_FRect& dst, const SDL_Re
 	SDL_SetTextureAlphaMod(texture->get_resource(), color.a);
 
 	SDL_FPoint camera_position = m_camera.get_position();
+	if (!m_camera.object_is_visible(dst))
+	{ 
+		omitido += 1;
+		return;
+ 	}
 
 	SDL_FRect abs_rect;
 	abs_rect.x = dst.x - camera_position.x;
@@ -112,6 +118,8 @@ void Renderer::draw_texture(Texture* texture, const SDL_FRect& dst, const SDL_Re
 	abs_rect.h = dst.h;
 
 	SDL_RenderCopyF(m_renderer, texture->get_resource(), &src, &abs_rect);
+
+	dibujado += 1;
 }
 
 void Renderer::render_clear()
@@ -123,6 +131,9 @@ void Renderer::render_clear(SDL_Color color)
 {
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_renderer);
+
+	dibujado = 0;
+	omitido = 0;
 }
 
 void Renderer::render_present()

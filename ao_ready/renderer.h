@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include <SDL_rect.h>
 
-#include "defines.h"
+#include "definitions.h"
 #include "camera.h"
 
 struct SDL_Renderer;
@@ -28,6 +28,7 @@ public:
 	void cleanup();
 
 	Texture* get_texture(int id);
+	SDL_Renderer* get_sdl_renderer() const { return m_renderer; }
 
 	void set_camera(const Camera& camera) { m_camera = camera; }
 	Camera get_camera() const { return m_camera; }
@@ -41,5 +42,8 @@ public:
 	void render_clear();
 	void render_clear(SDL_Color color);
 	void render_present();
+
+	int dibujado = 0;
+	int omitido = 0;
 };
 

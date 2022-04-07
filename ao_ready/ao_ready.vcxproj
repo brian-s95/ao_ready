@@ -147,16 +147,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="byte_buffer.cpp" />
     <ClCompile Include="camera.cpp" />
-    <ClCompile Include="defines.cpp" />
+    <ClCompile Include="definitions.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="byte_buffer.h" />
     <ClInclude Include="camera.h" />
-    <ClInclude Include="defines.h" />
+    <ClInclude Include="definitions.h" />
     <ClInclude Include="grh_data.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="renderer.h" />
