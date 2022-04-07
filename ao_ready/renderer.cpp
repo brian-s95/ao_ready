@@ -103,7 +103,15 @@ void Renderer::draw_texture(Texture* texture, const SDL_FRect& dst, const SDL_Re
 	SDL_SetTextureColorMod(texture->get_resource(), color.r, color.g, color.b);
 	SDL_SetTextureAlphaMod(texture->get_resource(), color.a);
 
-	SDL_RenderCopyF(m_renderer, texture->get_resource(), &src, &dst);
+	SDL_FPoint camera_position = m_camera.get_position();
+
+	SDL_FRect abs_rect;
+	abs_rect.x = dst.x - camera_position.x;
+	abs_rect.y = dst.y - camera_position.y;
+	abs_rect.w = dst.w;
+	abs_rect.h = dst.h;
+
+	SDL_RenderCopyF(m_renderer, texture->get_resource(), &src, &abs_rect);
 }
 
 void Renderer::render_clear()

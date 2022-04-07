@@ -18,12 +18,18 @@ bool Image::load_from_file(const std::string& path)
 		return false;
 	}
 
+	Sint64 size = SDL_RWsize(file_handle);
+	if(!file_handle)
+	{
+		SDL_RWclose(file_handle);
+	}
+
+	std::vector<uint8_t> data(size);
+	SDL_RWread(file_handle, data.data(), size, 1);
 
 
-
-
-
-	return false;
+	SDL_RWclose(file_handle);
+	return true;
 }
 
 bool Image::load_from_memory(const void* data, std::size_t size_in_bytes)
