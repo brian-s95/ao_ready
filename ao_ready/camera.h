@@ -15,8 +15,8 @@ public:
 
 	SDL_Rect get_viewport_rect() const;
 
-	bool object_is_visible(const SDL_Rect& bounds);
-	bool object_is_visible(const SDL_FRect& bounds);
+	bool object_is_visible(const SDL_Rect& bounds) const;
+	bool object_is_visible(const SDL_FRect& bounds) const;
 
 	SDL_Rect transform(const SDL_Rect& rect) const;
 	SDL_FRect transform(const SDL_FRect& rect) const;

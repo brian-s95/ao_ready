@@ -24,13 +24,13 @@ SDL_Rect Camera::get_viewport_rect() const
 	return viewport;
 }
 
-bool Camera::object_is_visible(const SDL_Rect& bounds)
+bool Camera::object_is_visible(const SDL_Rect& bounds) const
 {
 	SDL_Rect viewport = get_viewport_rect();
 	return SDL_HasIntersection(&viewport, &bounds);
 }
 
-bool Camera::object_is_visible(const SDL_FRect& bounds)
+bool Camera::object_is_visible(const SDL_FRect& bounds) const
 {
 	SDL_Rect viewport = get_viewport_rect();
 	SDL_Rect float_bounds =

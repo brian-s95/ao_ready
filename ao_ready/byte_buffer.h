@@ -13,6 +13,7 @@ private:
 
 public:
 	ByteBuffer();
+	ByteBuffer(const void* src, std::size_t size);
 
 	void write_data(const void* src, std::size_t size);
 	void read_data(void* dst, std::size_t size);

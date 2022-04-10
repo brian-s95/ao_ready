@@ -1,10 +1,11 @@
 #include <SDL.h>
+#include <SDL_image.h>
 #include <sstream>
+#include <cmath>
 
 #include "renderer.h"
 #include "texture.h"
 #include "image.h"
-#include <iostream>
 
 Renderer::Renderer()
 :m_renderer(nullptr)
@@ -40,27 +41,24 @@ void Renderer::cleanup()
 	m_renderer = nullptr;
 }
 
-Texture* Renderer::get_texture(int id)
+Texture* Renderer::get_texture(const std::string& path)
 {
-	auto found = m_textures.find(id);
+	auto found = m_textures.find(path);
 	if (found != m_textures.end()) {
 		return found->second.get();
 	}
-
-	std::string path = "resources/graphics/" + std::to_string(id) + ".bmp";
-	Image image;
-
-	if (!image.load_from_file(path))
+	
+	auto surface = IMG_Load(path.c_str());
+	if (!surface)
 	{
-		std::ostringstream error_str;
-		error_str << "failed to create image\n PATH_ERROR: " << path;
-		throw std::runtime_error(error_str.str());
+		std::ostringstream error_msg;
+		error_msg << "failed to load image " << path
+				  << " \nSDL Error " << IMG_GetError();
+
+		throw std::runtime_error(error_msg.str());
 	}
 
-	auto surface = new SDL_Surface;
-
-	SDL_Texture* resource = SDL_CreateTextureFromSurface(m_renderer, surface);
-
+	auto resource = SDL_CreateTextureFromSurface(m_renderer, surface);
 	if (!resource) 
 	{
 		std::ostringstream error_msg;
@@ -74,8 +72,8 @@ Texture* Renderer::get_texture(int id)
 	auto texturePtr = std::make_shared<Texture>(resource, surface->w, surface->h);
 	SDL_FreeSurface(surface);
 
-	m_textures.emplace(id, texturePtr);
-	return m_textures[id].get();
+	m_textures.emplace(path, texturePtr);
+	return m_textures[path].get();
 }
 
 void Renderer::draw_texture(Texture* texture, float x, float y, const SDL_Rect& src)
@@ -104,12 +102,7 @@ void Renderer::draw_texture(Texture* texture, const SDL_FRect& dst, const SDL_Re
 	SDL_SetTextureColorMod(texture->get_resource(), color.r, color.g, color.b);
 	SDL_SetTextureAlphaMod(texture->get_resource(), color.a);
 
-	SDL_FPoint camera_position = m_camera.get_position();
-	if (!m_camera.object_is_visible(dst))
-	{ 
-		omitido += 1;
-		return;
- 	}
+	SDL_FPoint camera_position = m_camera.get_position(); 
 
 	SDL_FRect abs_rect;
 	abs_rect.x = dst.x - camera_position.x;
@@ -117,9 +110,60 @@ void Renderer::draw_texture(Texture* texture, const SDL_FRect& dst, const SDL_Re
 	abs_rect.w = dst.w;
 	abs_rect.h = dst.h;
 
-	SDL_RenderCopyF(m_renderer, texture->get_resource(), &src, &abs_rect);
+	SDL_RenderCopyF(m_renderer, texture->get_resource(), &src, &abs_rect); 
+}
 
-	dibujado += 1;
+void Renderer::draw_rect(SDL_Rect rect, SDL_Color color, bool fill)
+{
+	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
+	SDL_FPoint position = m_camera.get_position();
+
+	rect.x -= static_cast<int>(std::roundf( position.x));
+	rect.y -= static_cast<int>(std::roundf(position.y));
+
+	if (fill)
+		SDL_RenderFillRect(m_renderer, &rect);
+	else
+		SDL_RenderDrawRect(m_renderer, &rect);
+
+}
+
+void Renderer::draw_line(SDL_Point start, SDL_Point end, SDL_Color color)
+{
+	SDL_FPoint position = m_camera.get_position();
+
+	start.x -= static_cast<int>(position.x);
+	start.y -= static_cast<int>(position.y);
+	end.x	-= static_cast<int>(position.x);
+	end.y	-= static_cast<int>(position.y);
+
+	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
+	SDL_RenderDrawLine(m_renderer, start.x, start.y, end.x, end.y);
+}
+
+void Renderer::draw_lines(const SDL_Point* points, std::size_t count, SDL_Color color)
+{
+	SDL_FPoint position = m_camera.get_position();
+	SDL_Point start;
+	SDL_Point end;
+
+	if (count % 2 == 0)
+	{
+		SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
+		
+		for (size_t i = 0; i < count; i += 2)
+		{
+			start = points[i];
+			end = points[i + 1];
+
+			start.x -= static_cast<int>(position.x);
+			start.y -= static_cast<int>(position.y);
+			end.x	-= static_cast<int>(position.x);
+			end.y	-= static_cast<int>(position.y);
+
+			SDL_RenderDrawLine(m_renderer, start.x, start.y, end.x, end.y);
+		}
+	}
 }
 
 void Renderer::render_clear()
@@ -130,10 +174,7 @@ void Renderer::render_clear()
 void Renderer::render_clear(SDL_Color color)
 {
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
-	SDL_RenderClear(m_renderer);
-
-	dibujado = 0;
-	omitido = 0;
+	SDL_RenderClear(m_renderer); 
 }
 
 void Renderer::render_present()

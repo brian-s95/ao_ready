@@ -1,51 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="graphics">
-      <UniqueIdentifier>{c780791d-1151-46cd-b4d0-a235138b3fc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="data">
-      <UniqueIdentifier>{41601e46-efdc-4ad9-be4e-736cd5f139b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ext">
-      <UniqueIdentifier>{2ac37f4d-57e8-4aae-bc84-e595f61dd0ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="io">
-      <UniqueIdentifier>{18195f30-bbbe-434b-acf0-9301c570765c}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="renderer.cpp">
-      <Filter>graphics</Filter>
-    </ClCompile>
     <ClCompile Include="definitions.cpp" />
-    <ClCompile Include="texture.cpp">
-      <Filter>graphics</Filter>
-    </ClCompile>
     <ClCompile Include="image.cpp" />
-    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="texture.cpp" />
     <ClCompile Include="byte_buffer.cpp" />
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="map.cpp" />
+    <ClCompile Include="filesystem_utils.cpp" />
+    <ClCompile Include="resource_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="renderer.h">
-      <Filter>graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="grh_data.h">
-      <Filter>data</Filter>
-    </ClInclude>
     <ClInclude Include="definitions.h" />
-    <ClInclude Include="texture.h">
-      <Filter>graphics</Filter>
-    </ClInclude>
     <ClInclude Include="image.h" />
-    <ClInclude Include="stb_image.h">
-      <Filter>ext</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_image_write.h">
-      <Filter>ext</Filter>
-    </ClInclude>
-    <ClInclude Include="camera.h" />
+    <ClInclude Include="grh_data.h" />
+    <ClInclude Include="texture.h" />
+    <ClInclude Include="renderer.h" />
     <ClInclude Include="byte_buffer.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="stb_image_write.h" />
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="map.h" />
+    <ClInclude Include="filesystem_utils.h" />
+    <ClInclude Include="resource_manager.h" />
   </ItemGroup>
 </Project>

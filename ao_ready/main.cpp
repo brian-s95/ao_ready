@@ -4,22 +4,78 @@
 
 #include "texture.h"
 #include "renderer.h"
+#include "camera.h"
+#include "resource_manager.h"
+#include "map.h"
+
+std::unique_ptr<Renderer> g_renderer;
+std::unique_ptr<ResourceManager> g_resource_manager;
+
+struct Animation
+{
+	std::vector<SDL_Rect> frames;
+	Texture* sprite_sheet;
+
+	void add_frame(const SDL_Rect& frame)
+	{
+		frames.push_back(frame);
+	}
+
+	std::size_t size() const { return frames.size(); }
+	SDL_Rect get_frame(std::size_t id) { return frames[id]; }
+};
 
 int main(int argc, char** args)
 {	
+	srand(time(nullptr));
+	
 	auto window = SDL_CreateWindow("Argentum Online 0.13.0", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_SHOWN);
-	auto renderer = std::make_unique<Renderer>();
-	renderer->init(window, false);
-	auto run = true;
+	g_renderer = std::make_unique<Renderer>();
+	g_renderer->init(window, false);
 
-	auto surface = SDL_LoadBMP(R"(C:\Users\monchi\source\repos\Arlen\Arlen\aoaugraficos.bmp)");
-	auto texture_ptr = SDL_CreateTextureFromSurface(renderer->get_sdl_renderer(), surface);
-	std::cout << SDL_GetError() << std::endl;
+	g_resource_manager = std::make_unique<ResourceManager>();
+	g_resource_manager->load_resources();
 
-	auto texture = std::make_unique<Texture>(texture_ptr, surface->w, surface->h);
+	Map map;
+	map.load_from_file("data/mapas/mapa1.map");
+
 	auto camera = Camera(1280, 720);
-	 
 	auto speed = 200.0f;
+
+	auto texture = g_renderer->get_texture("data/graphics/3099.png");
+	SDL_SetTextureBlendMode(texture->get_resource(), SDL_BLENDMODE_ADD);
+
+	Animation animation;
+	animation.sprite_sheet = texture;
+	
+	int w = texture->get_width() / 5;
+	int h = texture->get_height() / 2;
+
+	for (size_t x = 0; x < 5; x++)
+	{
+		SDL_Rect frame;
+		frame.x = x * w;
+		frame.y = 0;
+		frame.w = w;
+		frame.h = h;
+
+		animation.add_frame(frame);
+	}
+
+	for (size_t x = 0; x < 5; x++)
+	{
+		SDL_Rect frame;
+		frame.x = x * w;
+		frame.y = h;
+		frame.w = w;
+		frame.h = h;
+
+		animation.add_frame(frame);
+	}
+
+	int current_frame = 0;
+	float time = 0.0f;
+	const float max_time = 0.04f;
 
 	auto key_maps = std::unordered_map<int, SDL_FPoint>
 	{
@@ -29,23 +85,19 @@ int main(int argc, char** args)
 		{SDL_SCANCODE_RIGHT, {1.0f, 0.0f}}
 	};
 
-	Uint64 NOW = SDL_GetPerformanceCounter();
-	Uint64 LAST = 0;
-	float delta_time = 0;
-
-	srand(time(nullptr));
-
-	std::vector<SDL_FPoint> sprites;
-	for (size_t x = 0; x < 30000; x++)
+	auto get_tick = [](uint64_t& clock) -> float
 	{
-		float pos_x = rand() % 32000;
-		float pos_y = rand() % 32000;
+		uint64_t last = clock;
+		uint64_t now = SDL_GetTicks64();
+		clock = now;
 
-		sprites.push_back({ pos_x, pos_y });
-	}
-	
+		uint64_t elapsed = now - last;
+		return static_cast<float>(elapsed) / 1000.f;
+	};
+	uint64_t clock = SDL_GetTicks64();
 
-
+	 
+	auto run = true;
 	while (run)
 	{
 		SDL_Event event;
@@ -55,13 +107,22 @@ int main(int argc, char** args)
 				run = false;
 		}
 
+		int x; int y;
+		SDL_GetMouseState(&x, &y);
+		x += camera.get_position().x;
+		y += camera.get_position().y;
+
 		auto keyboard_state_array = SDL_GetKeyboardState(nullptr);
-		LAST = NOW;
-		NOW = SDL_GetPerformanceCounter();
 
-		delta_time = (float)((NOW - LAST) * 1000 / (float)SDL_GetPerformanceFrequency());
-		
+		float dt = get_tick(clock);
 
+		time += dt;
+		if (time > max_time)
+		{
+			current_frame = (current_frame + 1) % animation.size();
+			time = 0;
+		}
+		 
 		SDL_FPoint velocity{};
 		for (const auto& key : key_maps)
 		{
@@ -72,25 +133,22 @@ int main(int argc, char** args)
 			}
 		}
 
-		float offset_x = (velocity.x * speed) * (delta_time / 1000.f);
-		float offset_y = (velocity.y * speed) * (delta_time / 1000.f);
+		float offset_x = (velocity.x * speed) * dt;
+		float offset_y = (velocity.y * speed) * dt;
 
 		camera.move(offset_x, offset_y);
 
-		renderer->set_camera(camera);
-		renderer->render_clear(/*{32u, 32u, 34u, 255u}*/);
+		g_renderer->set_camera(camera);
+		g_renderer->render_clear({32u, 32u, 34u, 255u});
+		g_renderer->draw_rect({ 0, 0, 3200, 3200 }, {255, 0, 0, 255}, true);
+		g_renderer->draw_texture(texture, 600, 50, animation.get_frame(current_frame), {255, 255, 255, 255});
 
-
-		for (const auto& sprite : sprites)
-		{
-			renderer->draw_texture(texture.get(), sprite.x, sprite.y, texture->get_texture_rect());
-		}
-
-		renderer->render_present();
-		std::cout << "dibujado " << renderer->dibujado << " omitido " << renderer->omitido << std::endl;
+		map.draw(camera);
+		g_renderer->draw_texture(texture, x - (w / 2), y - (h / 2), animation.get_frame(current_frame), { 255, 255, 255, 155 });
+		g_renderer->render_present();
 	}
 
-	renderer->cleanup();
+	g_renderer->cleanup();
 	SDL_DestroyWindow(window);
 	return 0;
 } 

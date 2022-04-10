@@ -5,6 +5,11 @@ ByteBuffer::ByteBuffer()
 {
 }
 
+ByteBuffer::ByteBuffer(const void* src, std::size_t size)
+{
+	write_data(src, size);
+}
+
 void ByteBuffer::write_data(const void* src, const std::size_t size)
 {
 	const uint8_t* ptr = reinterpret_cast<const uint8_t*>(src);

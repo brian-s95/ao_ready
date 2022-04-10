@@ -78,13 +78,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\SDL2\VC\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDL2\VC\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\SDL2\VC\include;C:\SDL2\VC\SDL2_image\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SDL2\VC\lib\x64;C:\SDL2\VC\SDL2_image\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\SDL2\VC\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDL2\VC\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\SDL2\VC\include;C:\SDL2\VC\SDL2_image\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SDL2\VC\lib\x64;C:\SDL2\VC\SDL2_image\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -125,7 +125,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,25 +143,31 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="byte_buffer.cpp" />
-    <ClCompile Include="camera.cpp" />
     <ClCompile Include="definitions.cpp" />
+    <ClCompile Include="filesystem_utils.cpp" />
     <ClCompile Include="image.cpp" />
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="resource_manager.cpp" />
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_buffer.h" />
-    <ClInclude Include="camera.h" />
     <ClInclude Include="definitions.h" />
+    <ClInclude Include="filesystem_utils.h" />
     <ClInclude Include="grh_data.h" />
     <ClInclude Include="image.h" />
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="map.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="resource_manager.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stb_image_write.h" />
     <ClInclude Include="texture.h" />
