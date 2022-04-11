@@ -23,7 +23,7 @@ public:
 	};
 
 private:
-	std::array<TileData, MAP_SIZE * MAP_SIZE> m_tiles;
+	std::vector<TileData> m_tiles;
 	std::unordered_map<int, Texture*> m_textures;
 
 	void draw_ground(const Camera& camera); 

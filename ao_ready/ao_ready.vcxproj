@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\SDL2\VC\include;C:\SDL2\VC\SDL2_image\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDL2\VC\lib\x64;C:\SDL2\VC\SDL2_image\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\libs\SDL2-2.0.20\include;C:\libs\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\libs\SDL2-2.0.20\lib\x64;C:\libs\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -152,6 +152,7 @@
     <ClCompile Include="filesystem_utils.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="init_file.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="renderer.cpp" />
@@ -162,9 +163,9 @@
     <ClInclude Include="byte_buffer.h" />
     <ClInclude Include="definitions.h" />
     <ClInclude Include="filesystem_utils.h" />
-    <ClInclude Include="grh_data.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="init_file.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resource_manager.h" />

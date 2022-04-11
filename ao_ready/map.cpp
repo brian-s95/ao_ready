@@ -92,40 +92,42 @@ void Map::draw_tile(int id, int x, int y)
 {
 	if (id == 0) return;
 
-	auto grh = g_resource_manager->get_grh(id);
-	if (grh->frame_count > 1)
-		grh = g_resource_manager->get_grh(grh->frames[1]);
+	//auto grh = g_resource_manager->get_grh(id);
+	//if (grh->frame_count > 1)
+	//	grh = g_resource_manager->get_grh(grh->frames[1]);
 
-	int tile_width = grh->region.w / TILE_SIZE;
-	int tile_height = grh->region.h / TILE_SIZE;
-
-	if (tile_width != 1)
-		x = x - (tile_width * TILE_SIZE / 2) + TILE_SIZE / 2;
-
-	if (tile_height != 1)
-		y = y - (tile_height * TILE_SIZE) + TILE_SIZE;
-
-	Texture* texture = get_texture(grh->file_num);
-	g_renderer->draw_texture(texture, (float)x, (float)y, grh->region);
+	//int tile_width = grh->region.w / TILE_SIZE;
+	//int tile_height = grh->region.h / TILE_SIZE;
+	//
+	//if (tile_width != 1)
+	//	x = x - (tile_width * TILE_SIZE / 2) + TILE_SIZE / 2;
+	//
+	//if (tile_height != 1)
+	//	y = y - (tile_height * TILE_SIZE) + TILE_SIZE;
+	//
+	//Texture* texture = get_texture(grh->file_num);
+	//g_renderer->draw_texture(texture, (float)x, (float)y, grh->region);
 }
 
 Texture* Map::get_texture(int id)
 {
-	auto found = m_textures.find(id);
-	if (found != m_textures.end())
-	{
-		return found->second;
-	}
-	else
-	{
-		auto texture_ptr = g_renderer->get_texture("data/graphics/" + std::to_string(id) + ".png");
-		m_textures.emplace(id, texture_ptr);
-		return texture_ptr;
-	}
+	//auto found = m_textures.find(id);
+	//if (found != m_textures.end())
+	//{
+	//	return found->second;
+	//}
+	//else
+	//{
+	//	auto texture_ptr = g_renderer->get_texture("data/graphics/" + std::to_string(id) + ".png");
+	//	m_textures.emplace(id, texture_ptr);
+	//	return texture_ptr;
+	//}
+	return NULL;
 }
 
 Map::Map()
 {
+	m_tiles.resize(MAP_SIZE * MAP_SIZE);
 }
 
 Map::~Map()

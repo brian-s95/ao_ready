@@ -11,11 +11,11 @@
     <ClCompile Include="map.cpp" />
     <ClCompile Include="filesystem_utils.cpp" />
     <ClCompile Include="resource_manager.cpp" />
+    <ClCompile Include="init_file.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="definitions.h" />
     <ClInclude Include="image.h" />
-    <ClInclude Include="grh_data.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="byte_buffer.h" />
@@ -25,5 +25,6 @@
     <ClInclude Include="map.h" />
     <ClInclude Include="filesystem_utils.h" />
     <ClInclude Include="resource_manager.h" />
+    <ClInclude Include="init_file.h" />
   </ItemGroup>
 </Project>
